@@ -2,15 +2,15 @@ import scrapy
 import ast
 import re
 from selenium import webdriver
-
+from scrapy.exporters import BaseItemExporter
 
 class ElectionSpider(scrapy.Spider):
 	name = "election_spider"
-	start_urls = ['http://irelandelection.com/election.php?elecid=231&constitid=51&constitbutton=Next&electype=1']
+	start_urls = ['http://www.irelandelection.com/election.php?elecid=231&constitid=1&electype=1']
 	driver = webdriver.PhantomJS()
 	driver.get(start_urls[0])
-
-	def parse(self, response):
+	name = 'electionspider'
+	exporter = BaseItemExporter(encoding = 'utf-8')
 
 		seats = int(response.css('.well table tr td::text').extract()[0][-1])
 		quota = re.search('\d+', str(response.css('.well table tr td::text'). \
@@ -48,7 +48,7 @@ class ElectionSpider(scrapy.Spider):
 			name = name[0:(name.find('(')-1)]
 
 			yield {
-				'party' : td.css('td a img ::attr(title)').extract_first(),
+				'party' : to_write(td.css('td a img ::attr(title)').extract_first()),
 				'name' : name,
 				'transfers': transfers[i],
 				'round_totals': round_totals[i],
@@ -60,27 +60,25 @@ class ElectionSpider(scrapy.Spider):
 				'electorate': electorate,
 				'valid': valid,
 				'spoilt': spoilt
-
 			}
 
 			i += 1
 			
-		next_url = self.driver.find_element_by_xpath("//*[@id='maintablecontent']/div[1]/div[4]/form/div[2]/input[2]")
-		next_url.click()
-		county = self.driver.find_element_by_xpath('//select[@name="constitid"]//option[@selected]').get_attribute("text")
+		# next_url = self.driver.find_element_by_xpath("//*[@id='maintablecontent']/div[1]/div[4]/form/div[2]/input[2]")
+		# next_url.click()
+		# county = self.driver.find_element_by_xpath('//select[@name="constitid"]//option[@selected]').get_attribute("text")
+		# if county.strip()==constit.strip():
 
-		if county.strip()==constit.strip():
-			next_url = self.driver.find_element_by_xpath('//*[@id="maintablecontent"]/div[1]/div[4]/form/div[2]/select/option[1]')
-			next_url.click()
-			next_url = self.driver.find_element_by_xpath("//*[@id='maintablecontent']/div[1]/div[4]/form/div[1]/input[1]")
-			next_url.click()
-		while True:
-			try:
-				#parsethebodyyourwebdriverhas
-				yield scrapy.Request(
-					response.urljoin(self.driver.current_url),
-					callback = self.parse
-					)
-			except:
-				break	
+		# 	next_url = self.driver.find_element_by_xpath('//*[@id="maintablecontent"]/div[1]/div[4]/form/div[2]/select/option[1]')
+		# 	next_url.click()
+		# 	next_url = self.driver.find_element_by_xpath("//*[@id='maintablecontent']/div[1]/div[4]/form/div[1]/input[1]")
+		# 	next_url.click()
+		# while True:
+		# 	try:
+		# 		#parsethebodyyourwebdriverhas
+		# 		yield scrapy.Request(self.driver.current_url,
+		# 			callback = self.parse
+		# 			)
+		# 	except:
+		# 		break	
 		self.driver.close()
