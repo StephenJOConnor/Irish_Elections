@@ -1,0 +1,53 @@
+#master table
+election - type of national election
+year - year of election
+constit - constituency
+party - party
+name - candidate's full name
+seats - seats in constituency
+quota - quota
+electorate - eligible vote
+turnout - turnout
+valid - valid votes
+spoilt - spoilt votes
+transfers - vote transfers by round
+round_totals - totals for each round
+
+#new variables
+party_code
+name_code
+constit_code
+race - race code
+elec_num - national election number
+elimination_rd 
+vote_out
+inward_vote_1
+party_transfer_1
+p_t_1_code
+agg_vote_out_1
+
+#lean table
+year
+seats
+electorate
+turnout
+valid
+spoilt
+transfers
+party_code
+name_code
+constit_code
+race
+elec_num
+elimination_rd
+vote_out
+
+#loop to find...
+inward_vote for each round
+party_transfer_1
+p_t_1_code
+
+#reference table
+
+
+

@@ -5,7 +5,7 @@ from selenium import webdriver
 from scrapy.exporters import BaseItemExporter
 
 class ElectionSpider(scrapy.Spider):
-	start_urls = ['http://www.irelandelection.com/election.php?elecid=3&constitid=19&electype=1']
+	start_urls = ['http://www.irelandelection.com/election.php?elecid=227&constitid=485&electype=8']
 	driver = webdriver.PhantomJS()
 	driver.get(start_urls[0])
 	name = 'electionspider'

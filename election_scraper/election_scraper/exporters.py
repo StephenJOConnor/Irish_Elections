@@ -30,7 +30,7 @@ class FixedFileFeedStorage(object):
 
 class MyCsvItemExporter(CsvItemExporter):
 
-    def __init__(self, file, include_headers_line=False, join_multivalued=',', **kwargs):
+    def __init__(self, file, include_headers_line=True, join_multivalued=',', **kwargs):
 
         # Custom delimiter
 
