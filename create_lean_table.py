@@ -22,19 +22,25 @@ def inward_votes(x, i):
             return 0
     else:
         return 0
+# In[]
 
+# create columns for each inward vote-transfer
 for i in range(0, max(dail['rounds'])):   
     dail['inward_vote_' + str(i)] = dail.apply(lambda x: inward_votes(x['transfers'], i), axis = 1)
 
 # In[16]:
 
+# 
 for i in range(1, max(dail['rounds'])):
-    rnd_transfers = dail[dail['elimination_rd']==i][['race', 'party']] 
-    
+	
+	# find the parties eliminated at each round
+    rnd_transfers = dail[dail['elimination_rd']==i][['race', 'party']]    
     rnd_transfers = rnd_transfers.drop_duplicates()
     rnd_transfers['party_transfer_' + str(i)] = rnd_transfers.\
         apply(lambda x: sorted(list(rnd_transfers[rnd_transfers['race']== x['race']]['party'])), axis=1)
     rnd_transfers = rnd_transfers.drop(['party'], axis=1)
+	
+	# find how many votes were transfered to each candidate by eliminated party
     rnd_transfers['party_transfer_' + str(i)] = rnd_transfers['party_transfer_' + str(i)].\
         apply(lambda x: str(x) if x is not None else "[]")
         
@@ -56,6 +62,7 @@ for i in range(1, max(dail['rounds'])):
 
 # In[]
 
+# isolate single party transfers
 def individual_party(x):
     x = ast.literal_eval(x)
     
@@ -64,7 +71,8 @@ def individual_party(x):
             return int(party_codes[party_codes['party']==x[0]]['party_code'])
     else:
         return None
-
+	
+# In[]
 for i in range(1, max(dail['rounds'])):
     
     # find the single party who transfered votes

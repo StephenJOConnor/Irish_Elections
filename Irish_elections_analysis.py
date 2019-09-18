@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[52]:
-
-
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
@@ -12,7 +6,6 @@ import matplotlib.pyplot as plt
 
 
 # In[4]:
-
 
 xls = pd.read_csv('Dail.csv', encoding='cp1252')
 
